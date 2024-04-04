@@ -43,20 +43,29 @@ class Quiz {
   checkAnswer(answer) {
     const currentQuestion = this.questions[this.currentQuestionIndex];
     if (currentQuestion.answer === answer) {
-        this.correctAnswers ++;
+      this.correctAnswers++;
     }
   }
 
-  hasEnded(){
-
-    return this.currentQuestionIndex === this.questions.length ;
+  hasEnded() {
+    return this.currentQuestionIndex === this.questions.length;
   }
 
   filterQuestionsByDifficulty(difficulty) {
-    // if (difficulty < 1 || difficulty > 3) {
-    //   return;
-    // }
+    if (typeof difficulty !== "number" || difficulty < 1 || difficulty > 3) {
+      return;
+    }
 
-    // this.questions = this.questions.filter( (question) => question.difficulty === difficulty );
+    this.questions = this.questions.filter(
+      (question) => question.difficulty === difficulty
+    );
+  }
+
+  averageDifficulty() {
+    const totalDifficulty = this.questions.reduce(
+      (sum, question) => sum + question.difficulty,
+      0
+    );
+    return totalDifficulty / this.questions.length;
   }
 }
