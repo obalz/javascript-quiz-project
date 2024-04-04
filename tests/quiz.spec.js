@@ -273,6 +273,8 @@ describe("Quiz", () => {
   });
 
   describe("filterQuestionsByDifficulty() method", () => {
+
+    
     it("should be defined", () => {
       // Instantiate a new Quiz object
       const quiz = new Quiz([], "test", 60);
