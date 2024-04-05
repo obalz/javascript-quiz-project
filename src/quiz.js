@@ -44,7 +44,9 @@ class Quiz {
     const currentQuestion = this.questions[this.currentQuestionIndex];
     if (currentQuestion.answer === answer) {
       this.correctAnswers++;
+      return true;
     }
+    return false;
   }
 
   hasEnded() {
