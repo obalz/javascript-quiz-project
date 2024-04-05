@@ -84,6 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // showResults() - Displays the end view and the quiz results
 
   function showQuestion() {
+    console.log("showQUestion");
+
     // If the quiz has ended, show the results
     if (quiz.hasEnded()) {
       showResults();
@@ -105,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. Show the question
     // Update the inner text of the question container element and show the question text
     const questionDiv = document.getElementById("question");
-    questionDiv.innerText = questions;
+    questionDiv.innerText = question.text;
 
     // 2. Update the green progress bar
     // Update the green progress bar (div#progressBar) width so that it shows the percentage of questions answered
@@ -130,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
     /* 
           <input type="radio" name="choice" value="CHOICE TEXT HERE">
           <label>CHOICE TEXT HERE</label>
-        <br>
+          <br>
       */
     // Hint 1: You can use the `document.createElement()` method to create a new element.
     // Hint 2: You can use the `element.type`, `element.name`, and `element.value` properties to set the type, name, and value of an element.
@@ -138,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Hint 4: You can use the `element.innerText` property to set the inner text of an element.
 
     // Create and display new radio input element with a label for each choice
-    question.choices.forEach((choice) => {
+    question.choices.forEach((choice, index) => {
       // Create radio input element
       const radioInput = document.createElement("input");
       radioInput.type = "radio";
@@ -153,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
       listElement.append(radioInput, label, document.createElement("br"));
 
       // Append label to choices container
-      choicesContainer.appendChild(listElement);
+      choiceContainer.appendChild(listElement);
     });
   }
 
@@ -163,17 +165,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // YOUR CODE HERE:
     //
     // 1. Get all the choice elements. You can use the `document.querySelectorAll()` method.
-
-    const choiceElements = document.querySelectorAll("#choices > li");
+    const choiceElements = document.querySelectorAll("#choices > li > input");
 
     // 2. Loop through all the choice elements and check which one is selected
     // Hint: Radio input elements have a property `.checked` (e.g., `element.checked`).
     //  When a radio input gets selected the `.checked` property will be set to true.
     //  You can use check which choice was selected by checking if the `.checked` property is true.
-
-    choiceElements.forEach((listElement) => {
-      const currRadioInput = listElement.radioInput;
-
+    choiceElements.forEach((currRadioInput, index) => {
+      console.log(currRadioInput);
       if (currRadioInput.checked) {
         selectedAnswer = currRadioInput.value;
       }
@@ -186,12 +185,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Optionally, display a message indicating whether the answer was correct or not
     if (quiz.checkAnswer(selectedAnswer)) {
-      console.log("Correct answer!");
+      console.log("Correct answer!", selectedAnswer);
     } else {
       console.log("Incorrect answer!");
     }
 
     quiz.moveToNextQuestion();
+    showQuestion();
   }
 
   function showResults() {

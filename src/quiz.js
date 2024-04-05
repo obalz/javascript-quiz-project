@@ -50,7 +50,7 @@ class Quiz {
   }
 
   hasEnded() {
-    return this.currentQuestionIndex === this.questions.length;
+    return this.currentQuestionIndex >= this.questions.length;
   }
 
   filterQuestionsByDifficulty(difficulty) {
