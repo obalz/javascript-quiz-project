@@ -205,5 +205,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 3. Update the result container (div#result) inner text to show the number of correct answers out of total questions
     resultContainer.innerText = `You scored ${quiz.correctAnswers} out of ${quiz.questions.length} correct answers!`; // This value is hardcoded as a placeholder
+
+    document.getElementById("restartButton").addEventListener("click", () => {
+      quizView.style.display = "block";
+      endView.style.display = "none";
+      quiz.shuffleQuestions();
+      quiz.currentQuestionIndex = 0;
+      quiz.correctAnswers = 0;
+      showQuestion();
+    });
   }
 });
