@@ -54,24 +54,33 @@ document.addEventListener("DOMContentLoaded", () => {
   // Shuffle the quiz questions
   quiz.shuffleQuestions();
 
-  /************  SHOW INITIAL CONTENT  ************/
-
-  // Convert the time remaining in seconds to minutes and seconds, and pad the numbers with zeros if needed
-  const minutes = Math.floor(quiz.timeRemaining / 60)
-    .toString()
-    .padStart(2, "0");
-  const seconds = (quiz.timeRemaining % 60).toString().padStart(2, "0");
-
-  // Display the time remaining in the time remaining container
+  /************  TIMER  ************/
   const timeRemainingContainer = document.getElementById("timeRemaining");
-  timeRemainingContainer.innerText = `${minutes}:${seconds}`;
 
+  const showTimer = () => {
+    const minutes = Math.floor(quiz.timeRemaining / 60)
+      .toString()
+      .padStart(2, "0");
+    const seconds = (quiz.timeRemaining % 60).toString().padStart(2, "0");
+
+    timeRemainingContainer.innerText = `${minutes}:${seconds}`;
+  };
+
+  let timerId;
+
+  const timerCallback = () => {
+    if (quiz.timeRemaining <= 0) {
+      showResults();
+    }
+    quiz.timeRemaining--;
+    showTimer();
+  };
+
+  timerId = setInterval(timerCallback, 1000);
+
+  /************  SHOW INITIAL CONTENT  ************/
   // Show first question
   showQuestion();
-
-  /************  TIMER  ************/
-
-  let timer;
 
   /************  EVENT LISTENERS  ************/
 
@@ -113,8 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Update the green progress bar (div#progressBar) width so that it shows the percentage of questions answered
 
     // progressBar.style.width = `65%`; // This value is hardcoded as a placeholder
-    const progress =
-      ((quiz.currentQuestionIndex + 1) / quiz.questions.length) * 100;
+    const progress = (quiz.currentQuestionIndex / quiz.questions.length) * 100;
     progressBar.style.width = `${progress}%`;
 
     // 3. Update the question count text
@@ -195,8 +203,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function showResults() {
-    // YOUR CODE HERE:
-    //
+    clearInterval(timerId);
+
     // 1. Hide the quiz view (div#quizView)
     quizView.style.display = "none";
 
@@ -212,6 +220,9 @@ document.addEventListener("DOMContentLoaded", () => {
       quiz.shuffleQuestions();
       quiz.currentQuestionIndex = 0;
       quiz.correctAnswers = 0;
+      quiz.timeRemaining = quizDuration;
+      showTimer();
+      timerId = setInterval(timerCallback, 1000);
       showQuestion();
     });
   }
